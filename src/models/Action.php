@@ -1,6 +1,7 @@
 <?php
 
-require_once 'Status.php';
+namespace app\models;
+
 enum Action: string
 {
     case ACTION_CANCEL = 'cancel';   // отменить (заказчик)
