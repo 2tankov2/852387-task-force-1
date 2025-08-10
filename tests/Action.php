@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace TaskForce\Tests;
+namespace app\tests;
 
 require_once "../vendor/autoload.php";
 
