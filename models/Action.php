@@ -10,19 +10,9 @@ enum Action: string
     case ACTION_REJECT = 'reject';  // отказаться (исполнитель)
 
     /**
-     * Метод возвращает названия действия на русском языке
-    **/
-    public function translateAction(): string
-    {
-        return match($this) {
-            self::ACTION_CANCEL => 'отменить', // отменить задание (заказчик)
-            self::ACTION_RESPONSE => 'откликнуться', // откликнуться на задание (исполнитель)
-            self::ACTION_APPROVE_WORKER => 'выбрать исполнителя',  // ???? выбрать(принять) исполнителя для задания (заказчик)
-            self::ACTION_ACCEPT => 'принять', // принять задание-работу (заказчик)
-            self::ACTION_REJECT => 'отказаться', // отказаться от задания (исполнитель)
-        };
-    }
-
+     * Метод для возврата «карты» действий в виде ассоциативного массива.
+     * @return array массив [ключ — внутреннее имя, а значение — названия статуса на русском]
+     */
     public static function getTranslateActionMap(): array
     {
         return [

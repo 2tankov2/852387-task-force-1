@@ -10,19 +10,9 @@ enum Status: string
     case STATUS_FAILED = 'failed';   // провалено, отказался исполнитель
 
     /**
-     * Метод возвращает названия статуса на русском языке
-    **/
-    public function translateStatus(): string
-    {
-        return match($this) {
-            self::STATUS_NEW => 'новое',  // новое
-            self::STATUS_CANCEL => 'отменено', // отменено, отменил заказчик
-            self::STATUS_ACTIVE => 'в работе', // в работе
-            self::STATUS_READY => 'выполнено',  // выполнено, принято заказчиком
-            self::STATUS_FAILED => 'провалено', // провалено, отказался исполнитель
-        };
-    }
-
+     * Метод для возврата «карты» статусов в виде ассоциативного массива.
+     * @return array массив [ключ — внутреннее имя, а значение — названия статуса на русском]
+     **/
     public static function getTranslateStatusMap(): array
     {
         return [
