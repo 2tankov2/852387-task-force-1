@@ -1,0 +1,18 @@
+{
+    "name": "tankov/task-force",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "app\\": "src/",
+            "app\\tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "2tankov2",
+            "email": "domino-82@mail.ru"
+        }
+    ],
+    "require": {}
+}

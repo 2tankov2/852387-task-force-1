@@ -1,6 +1,7 @@
 <?php
 
-require_once 'Action.php';
+namespace app\models;
+
 enum Status: string
 {
     case STATUS_NEW = 'new';   // новое задание (заказчик)

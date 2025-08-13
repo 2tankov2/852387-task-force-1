@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require_once 'Status.php';
-require_once 'Action.php';
+namespace app\models;
+
 final class Task
 {
     public int $ownerId;
@@ -44,8 +44,14 @@ final class Task
     {
         $status = Status::tryFrom($status);
         return match ($status) {
-            Status::STATUS_NEW => [Action::ACTION_CANCEL->value, Action::ACTION_APPROVE_WORKER->value], //(cancel - для исполнителя, approve_worker - для заказчика, если откликнулись исполнители)
-            Status::STATUS_ACTIVE => [Action::ACTION_ACCEPT->value, Action::ACTION_REJECT->value], //  (accept - для заказчика, reject - для исполнителя)
+            Status::STATUS_NEW => [
+                Action::ACTION_CANCEL->value,
+                Action::ACTION_APPROVE_WORKER->value
+            ], //(cancel - для исполнителя, approve_worker - для заказчика, если откликнулись исполнители)
+            Status::STATUS_ACTIVE => [
+                Action::ACTION_ACCEPT->value,
+                Action::ACTION_REJECT->value
+            ], //  (accept - для заказчика, reject - для исполнителя)
             default => [],
         };
     }
@@ -53,7 +59,7 @@ final class Task
     /**
      * Метод для возврата «карты» статусов в виде ассоциативного массива.
      * @return array массив [ключ — внутреннее имя, а значение — названия статуса на русском]
-    **/
+     **/
     public function getStatusMap(): array
     {
         return Status::getTranslateStatusMap();
