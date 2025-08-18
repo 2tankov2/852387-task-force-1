@@ -76,7 +76,6 @@ CREATE TABLE tasks (
     location_id INT unsigned,
     coordinate_lat DECIMAL(10, 8),
     coordinate_long DECIMAL(10, 8),
-
     price INT,
 
     PRIMARY KEY (id),
