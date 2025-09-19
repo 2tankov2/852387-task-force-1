@@ -5,15 +5,23 @@ namespace app\tests;
 
 require_once "../vendor/autoload.php";
 
-use app\models\Task;
-use app\models\Action;
+use app\entities\ActionAccept;
+use app\entities\ActionCancel;
+use app\entities\ActionReject;
+use app\entities\Task;
+use app\enum\task\Action;
+
 
 $task = new Task('ready', 2, 3);
-assert($task->getActionsByStatus('new') === [Action::ACTION_CANCEL->value, Action::ACTION_APPROVE_WORKER->value], "Ожидает массив ['cancel', 'approve_worker']");
-assert($task->getActionsByStatus('cancel') === [], "Ожидает пустой []");
-assert($task->getActionsByStatus('active') === [Action::ACTION_ACCEPT->value, Action::ACTION_REJECT->value], "Ожидает массив ['accept', 'reject']");
-assert($task->getActionsByStatus('ready') === [], "Ожидает пустой []");
-assert($task->getActionsByStatus('failed') === [], "Ожидает пустой []");
-// ожидается 'cancel'
-assert($task->getActionsByStatus('') === []);
-var_dump($task->getActionMap());
+
+var_dump($task->getAvailableAction('new', 3));
+assert($task->getAvailableAction('new', 2) == new ActionCancel());
+assert($task->getAvailableAction('cancel', 5) === null);
+assert($task->getAvailableAction('active', 2) == new ActionAccept());
+assert($task->getAvailableAction('ready', 3) === null);
+assert($task->getAvailableAction('failed', 2) === null);
+assert($task->getAvailableAction('reject', 3) === null);
+assert($task->getAvailableAction('', 2) === null);
+assert($task->getAvailableAction('new', 0) === null);
+assert($task->getAvailableAction('active', 3) == new ActionReject());
+//var_dump($task->getActionMap());
