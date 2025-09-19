@@ -5,8 +5,8 @@ namespace app\tests;
 
 require_once "../vendor/autoload.php";
 
-use app\models\Task;
-use app\models\Status;
+use app\entities\Task;
+use app\enum\task\Status;
 
 $task = new Task('new',2, 1);
 assert($task->getNextStatus('cancel') === Status::STATUS_CANCEL->value, 'cancel');

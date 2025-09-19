@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace app\models;
+namespace app\entities;
+
+use app\enum\task\Action;
+use app\enum\task\Status;
 
 final class Task
 {
@@ -35,25 +38,31 @@ final class Task
     }
 
     /**
-     * Метод для получения доступных действий для указанного статуса, без учета роли пользователя(заказчик или исполнитель)
+     * Метод для получения доступных действий для указанного статуса и роли пользователя(заказчик или исполнитель)
      *
      * @param string $status статус задачи
-     * @return string[] возвращает возможные действия в виде массива строк // например ['cancel', 'approve_worker']
+     * @return ?object возвращает возможные действия в виде объекта действия
      */
-    public function getActionsByStatus(string $status): array
+    public function getAvailableAction(string $status, int $userId): ?object
     {
         $status = Status::tryFrom($status);
-        return match ($status) {
+        $actions = match ($status) {
             Status::STATUS_NEW => [
-                Action::ACTION_CANCEL->value,
-                Action::ACTION_APPROVE_WORKER->value
-            ], //(cancel - для исполнителя, approve_worker - для заказчика, если откликнулись исполнители)
+                ActionCancel::class,
+                ActionReply::class
+            ], //(cancel/отменить - для заказчика, reply/откликнуться - для исполнителя)
             Status::STATUS_ACTIVE => [
-                Action::ACTION_ACCEPT->value,
-                Action::ACTION_REJECT->value
-            ], //  (accept - для заказчика, reject - для исполнителя)
+                ActionAccept::class,
+                ActionReject::class
+            ], //  (accept/принять - для заказчика, reject/отказаться - для исполнителя)
             default => [],
         };
+
+        foreach ($actions as $className) {
+            if ($className::compareId($userId, $this->ownerId, $this->workerId))
+                return new $className();
+        };
+        return null;
     }
 
     /**
